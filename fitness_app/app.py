@@ -63,6 +63,17 @@ def login():
     
     return render_template('login.html')
 
+@app.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    if request.method == 'POST':
+        current_user.username = request.form.get('username')
+        current_user.email = request.form.get('email')
+        db.session.commit()
+        flash('Your profile has been updated!', 'success')
+        return redirect(url_for('profile'))
+    return render_template('profile.html')
+
 @app.route('/logout')
 @login_required
 def logout():
